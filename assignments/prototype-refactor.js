@@ -6,68 +6,145 @@ Prototype Refactor
 The console.log() statements should still return what is expected of them.
 */
 
-// Parent Function
-function GameObject(params) {
-this.createdAt = params.createdAt;
-this.name = params.name;
-this.dimensions = params.dimensions;
+// Parent Function Original.
+
+// function GameObject(params) {
+//     this.createdAt = params.createdAt;
+//     this.name = params.name;
+//     this.dimensions = params.dimensions;
+// }
+
+// GameObject.prototype.destroy = function() {
+//     return `${this.name} was removed from the game.`;
+// }
+
+// Parent Function Refactored.
+
+class GameObject {
+    constructor(params) {
+        this.createdAt = params.createdAt;
+        this.name = params.name;
+        this.dimensions = params.dimensions;
+    }
+
+    destroy() {
+        return `${this.name} was removed from the game.`;
+    }
 }
 
-GameObject.prototype.destroy = function() {
-return `${this.name} was removed from the game.`;
+
+// Child Function Original.
+
+// CharacterStats.prototype = Object.create(GameObject.prototype)
+
+// function CharacterStats(charParams) {
+//     GameObject.call(this,charParams); 
+//     this.healthPoints = charParams.healthPoints;
+// }
+
+// CharacterStats.prototype.takeDamage = function() {
+//     return `${this.name} took damage.`
+// }
+
+// Child Function Refactored.
+
+class CharacterStats extends GameObject {
+    constructor(charParams) {
+        super(charParams)
+        this.healthPoints = charParams.healthPoints;
+    }
+
+    takeDamage() {
+        return `${this.name} took damage.`
+    }
 }
 
-// Child Function
-CharacterStats.prototype = Object.create(GameObject.prototype)
 
-function CharacterStats(charParams) {
-GameObject.call(this,charParams); 
-this.healthPoints = charParams.healthPoints;
+// GrandChild Function Original.
+
+// Humanoid.prototype = Object.create(CharacterStats.prototype)
+
+// function Humanoid (humanParams) {
+//     CharacterStats.call(this, humanParams);
+//     this.team = humanParams.team;
+//     this.weapons = humanParams.weapons;
+//     this.language = humanParams.language;
+// }
+
+// Humanoid.prototype.greet = function() {
+//     return `${this.name} offers a greeting in ${this.language}.`;
+// }
+
+
+// GrandChild Function Refactored.
+
+class Humanoid extends CharacterStats {
+    constructor(humanParams) {
+        super(humanParams)
+        this.team = humanParams.team;
+        this.weapons = humanParams.weapons;
+        this.language = humanParams.language;
+    }
+
+    greet() {
+        return `${this.name} offers a greeting in ${this.language}.`;
+    }
 }
 
 
-CharacterStats.prototype.takeDamage = function() {
-return `${this.name} took damage.`
+// Hero GreatGrandChild Function Original.
+
+// function Hero(heroParams) {
+//     Humanoid.call(this, heroParams);
+//     this.damage = heroParams.damage;
+//     }
+// Hero.prototype = Object.create(Humanoid.prototype);
+
+// Hero.prototype.attack = function(villain) {
+//     villain.healthPoints = villain.healthPoints - hero.damage;
+//     return `${this.name} attacked Count Chocula for ${this.damage}, Count Chocula winces.`
+// }
+
+// Hero GreatGrandChild Function Refactored.
+
+class Hero extends Humanoid {
+    constructor(heroParams) {
+        super(heroParams)
+        this.damage = heroParams.damage;
+    }
+
+    attack() {
+        return `${this.name} attacked Count Chocula for ${this.damage}, Count Chocula winces.`
+    }
 }
 
-// GrandChild Function
-Humanoid.prototype = Object.create(CharacterStats.prototype)
 
-function Humanoid (humanParams) {
-CharacterStats.call(this, humanParams);
-this.team = humanParams.team;
-this.weapons = humanParams.weapons;
-this.language = humanParams.language;
+// Villain GreatGrandChild Function Original.
+
+// function Villain(villainParams) {
+//     Humanoid.call(this, villainParams);
+//     this.damage = villainParams.damage;
+// }
+
+// Villain.prototype = Object.create(Humanoid.prototype);
+
+// Villain.prototype.attack = function(villain) {
+//     hero.healthPoints = hero.healthPoints - villain.damage;
+//     return `${this.name} attacked for Katelyn ${this.damage}.`
+// }
+
+// Villain GreatGrandChild Function Refactored.
+
+class Villain extends Humanoid {
+    constructor(villainParams) {
+        super(villainParams)
+        this.damage = villainParams.damage;
+    }
+
+    attack() {
+        return `${this.name} attacked for Katelyn ${this.damage}.`
+    }
 }
-
-Humanoid.prototype.greet = function() {
-return `${this.name} offers a greeting in ${this.language}.`;
-}
-
-function Hero(heroParams) {
-Humanoid.call(this, heroParams);
-this.damage = heroParams.damage;
-}
-
-Hero.prototype = Object.create(Humanoid.prototype);
-
-Hero.prototype.attack = function(villain) {
-villain.healthPoints = villain.healthPoints - hero.damage;
-return `${this.name} attacked Count Chocula for ${this.damage}, Count Chocula winces.`
-}
-
-function Villain(villainParams) {
-Humanoid.call(this, villainParams);
-this.damage = villainParams.damage;
-}
-
-Villain.prototype = Object.create(Humanoid.prototype);
-
-Villain.prototype.attack = function(villain) {
-hero.healthPoints = hero.healthPoints - villain.damage;
-return `${this.name} attacked for Katelyn ${this.damage}.`
-}
-
 
 
 /*
@@ -75,7 +152,7 @@ return `${this.name} attacked for Katelyn ${this.damage}.`
 * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
 * Instances of CharacterStats should have all of the same properties as GameObject.
 */
-// Test you work by un-commenting these 3 objects and the list of console logs below:
+
 
 const mage = new Humanoid({
 createdAt: new Date(),
@@ -164,6 +241,7 @@ language: 'Sylvanian',
 damage: 10,
 });
 
+// Test you work by un-commenting these 3 objects and the list of console logs below:
 console.log(mage.createdAt); // Today's date
 console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
 console.log(swordsman.healthPoints); // 15
