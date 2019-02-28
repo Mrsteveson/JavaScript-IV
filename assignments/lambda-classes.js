@@ -30,7 +30,7 @@ class Instructor extends Person {
     }
 
     grade(student, subject) {
-        return `${student} receives a perfect score on ${subject}!`
+        return `${student} receives a perfect score on ${subject}!`;
     }
 }
 
@@ -46,15 +46,17 @@ class Student extends Person {
     }
 
     listsSubjects() {
-        return `${this.favSubjects}.`
+        for (let i = 0; i < this.favSubjects.length; i++){
+        console.log(`${this.favSubjects[i]}.`);
+        }
     }
 
     PRAssignment(subject) {
-        return `${this.name} has submitted a PR for ${subject}.`
+        return `${this.name} has submitted a PR for ${subject}.`;
     }
 
     sprintChallenge(subject) {
-        return `${this.name} has begun sprint challenge on ${subject}.`
+        return `${this.name} has begun sprint challenge on ${subject}.`;
     }
 }
 
@@ -83,7 +85,7 @@ const person = new Person ({
     name: 'Joe',
     location: 'Earth',
     age: 100,
-    gender: 'ambiguous',
+    gender: 'ambiguous'
 });
 
 // Instructor 
@@ -94,7 +96,7 @@ const luis = new Instructor ({
     gender: 'male',
     specialty: 'solving problems',
     favLanguage: 'JavaScript',
-    catchPhrase: 'Luis 4 President',
+    catchPhrase: 'Luis 4 President'
 });
 
 // Student
@@ -115,7 +117,7 @@ const kevin = new ProjectManager ({
     age: 25,
     gender: 'male',
     gradClassName: 'CS13',
-    favInstructor: 'Beej',
+    favInstructor: 'Beej'
 });
 
 // Console.logs
@@ -129,3 +131,5 @@ console.log(kevin.debugsCode('Patrick', 'JavaScript'));
 
 
 // Notes
+
+
